@@ -49,14 +49,14 @@ class JarvisApp(ctk.CTk):
         self.nav_bars = {}
         self.frames = {}
         for name in TABS:
-            btn = ctk.CTkButton(nav, text=name, fg_color="transparent", text_color=COLORS["text"],
-                                hover_color=COLORS["bg"], anchor="w",
-                                command=lambda n=name: self.show(n))
             row = ctk.CTkFrame(nav, fg_color="transparent")
             row.pack(fill="x", padx=(6, 10), pady=3)
             bar = ctk.CTkFrame(row, width=2, height=28, fg_color="transparent", corner_radius=0)
             bar.pack(side="left", fill="y")
-            btn.pack(in_=row, side="left", fill="x", expand=True, padx=(4, 0))
+            btn = ctk.CTkButton(row, text=name, fg_color="transparent", text_color=COLORS["text"],
+                                hover_color=COLORS["bg"], anchor="w",
+                                command=lambda n=name: self.show(n))
+            btn.pack( side="left", fill="x", expand=True, padx=(4, 0))
             self.nav_bars[name] = bar
             self.nav_buttons[name] = btn
             if name == "Home":
