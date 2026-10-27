@@ -86,5 +86,53 @@ class TestReads(unittest.TestCase):
         (self.root / "reports" / f"{day}.md").write_text("hello brief", encoding="utf-8")
         self.assertEqual(self.panel.today_brief(), "hello brief")
 
+
+class TestActions(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        (self.root / "STATE.md").write_text("# STATE\n", encoding="utf-8")
+        (self.root / "POLICY.yaml").write_text(
+            "status: approved\napps_allowlist: [chrome]\nrestricted: []\n",
+            encoding="utf-8",
+        )
+        (self.root / "logs").mkdir()
+        (self.root / "reports").mkdir()
+        (self.root / "scripts" / "win").mkdir(parents=True)
+        (self.root / "scripts" / "win" / "block_delete.py").write_text(
+            "import sys\nfrom pathlib import Path\n"
+            "p=Path(sys.argv[1])\n"
+            "print('REFUSED' if p.name=='STATE.md' else 'OK')\n"
+            "sys.exit(2 if p.name=='STATE.md' else 0)\n",
+            encoding="utf-8",
+        )
+        self.panel = panel_api.Panel(self.root)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_audit_line(self):
+        self.panel.audit("test", "STATE.md", "ok", "detail")
+        lines = (self.root / "logs" / "audit.jsonl").read_text(encoding="utf-8").strip().splitlines()
+        self.assertEqual(len(lines), 1)
+        self.assertIn("windows-panel", lines[0])
+
+    def test_save_policy_backup_and_reject_bad_yaml(self):
+        with self.assertRaises(ValueError):
+            self.panel.save_policy(":\n  bad")
+        path = self.panel.save_policy("status: approved\napps_allowlist: [chrome]\n")
+        self.assertTrue(path.is_file())
+        backups = list((self.root / "logs" / "policy-backups").glob("POLICY-*.yaml"))
+        self.assertTrue(backups)
+
+    def test_launch_unknown_refused(self):
+        code, out, err = self.panel.launch_app("not-an-app")
+        self.assertNotEqual(code, 0)
+
+    def test_block_delete_refuses_state(self):
+        code, out, err = self.panel.block_delete(self.root / "STATE.md")
+        self.assertEqual(code, 2)
+        self.assertIn("REFUSED", out)
+
 if __name__ == "__main__":
     unittest.main()

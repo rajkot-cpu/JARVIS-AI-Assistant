@@ -122,3 +122,97 @@ class Panel:
     def list_restricted(self) -> list[str]:
         r = self.parse_policy().get("restricted") or []
         return [str(x) for x in r] if isinstance(r, list) else []
+
+    # ---- actions ----
+    def audit(self, action: str, path: str, result: str, detail: str = "") -> None:
+        import json
+        now = datetime.now(timezone.utc)
+        rec = {
+            "ts_utc": now.isoformat(),
+            "ts_ist": now.astimezone(IST).isoformat(),
+            "actor": "windows-panel",
+            "action": action,
+            "path": str(path),
+            "result": result,
+            "detail": detail,
+        }
+        ld = self.root / "logs"
+        ld.mkdir(exist_ok=True)
+        with (ld / "audit.jsonl").open("a", encoding="utf-8") as f:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    def run_script(self, name: str, args: list[str] | None = None) -> tuple[int, str, str]:
+        import os, subprocess
+        script = self.root / "scripts" / "win" / f"{name}.py"
+        if not script.is_file():
+            return 1, "", f"script not found: {script}"
+        env = os.environ | {"JARVIS_HOME": str(self.root)}
+        try:
+            cp = subprocess.run([sys.executable, str(script), *(args or [])],
+                                capture_output=True, text=True, env=env,
+                                cwd=str(self.root), timeout=300)
+        except Exception as e:
+            return 1, "", str(e)
+        return cp.returncode, cp.stdout, cp.stderr
+
+    def _run_audited(self, name: str, args: list[str] | None = None) -> tuple[int, str, str]:
+        code, out, err = self.run_script(name, args)
+        self.audit(name, f"scripts/win/{name}.py", "ok" if code == 0 else "error",
+                   " ".join(args or []) + (f" rc={code}" if code else ""))
+        return code, out, err
+
+    def session_start(self) -> tuple[int, str, str]:
+        return self._run_audited("session_start")
+
+    def workday(self, dry: bool = False) -> tuple[int, str, str]:
+        return self._run_audited("workday_start", ["--dry"] if dry else [])
+
+    def write_brief(self) -> tuple[int, str, str]:
+        return self._run_audited("brief", ["--write"])
+
+    def save_policy(self, new_text: str) -> Path:
+        try:
+            data = yaml.safe_load(new_text)
+        except yaml.YAMLError as e:
+            self.audit("save_policy", "POLICY.yaml", "refused", f"bad yaml: {e}")
+            raise ValueError(f"POLICY.yaml does not parse: {e}") from e
+        if not isinstance(data, dict):
+            self.audit("save_policy", "POLICY.yaml", "refused", "not a mapping")
+            raise ValueError("POLICY.yaml must be a YAML mapping")
+        pol = self.root / "POLICY.yaml"
+        bdir = self.root / "logs" / "policy-backups"
+        bdir.mkdir(parents=True, exist_ok=True)
+        stamp = datetime.now(IST).strftime("%Y%m%d-%H%M%S")
+        backup = bdir / f"POLICY-{stamp}.yaml"
+        n = 1
+        while backup.exists():
+            backup = bdir / f"POLICY-{stamp}-{n}.yaml"; n += 1
+        backup.write_text(pol.read_text(encoding="utf-8") if pol.is_file() else "", encoding="utf-8")
+        pol.write_text(new_text, encoding="utf-8")
+        self.audit("save_policy", "POLICY.yaml", "ok", f"backup={backup.name}")
+        return pol
+
+    def block_delete(self, target: Path) -> tuple[int, str, str]:
+        code, out, err = self.run_script("block_delete", [str(target)])
+        self.audit("block_delete", str(target), "allowed" if code == 0 else "refused", f"rc={code}")
+        return code, out, err
+
+    def launch_app(self, name: str) -> tuple[int, str, str]:
+        import shutil, subprocess
+        allow = self.parse_policy().get("apps_allowlist") or []
+        if name not in allow or name not in WIN_APP_MAP:
+            self.audit("launch_app", name, "refused", "not in allowlist")
+            return 1, "", f"app not allowlisted: {name}"
+        for cmd in WIN_APP_MAP[name]:
+            exe = shutil.which(cmd) or (cmd if Path(cmd).is_absolute() and Path(cmd).is_file() else None)
+            if not exe:
+                continue
+            try:
+                subprocess.Popen([exe], close_fds=True)
+            except Exception as e:
+                self.audit("launch_app", name, "error", str(e))
+                return 1, "", str(e)
+            self.audit("launch_app", name, "ok", exe)
+            return 0, f"launched {exe}", ""
+        self.audit("launch_app", name, "refused", "app binary not found")
+        return 1, "", "app binary not found"
