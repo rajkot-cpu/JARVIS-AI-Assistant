@@ -5,6 +5,8 @@ from ui.home import HomeFrame
 from ui.state_view import StateFrame
 from ui.skills import SkillsFrame
 from ui.policy import PolicyFrame
+from ui.logs import LogsFrame
+from ui.apps import AppsFrame
 
 TABS = ["Home", "Skills", "POLICY", "Logs", "Apps", "STATE"]
 
@@ -46,6 +48,10 @@ class JarvisApp(ctk.CTk):
                 frame = SkillsFrame(self.content, self, panel)
             elif name == "POLICY":
                 frame = PolicyFrame(self.content, self, panel)
+            elif name == "Logs":
+                frame = LogsFrame(self.content, self, panel)
+            elif name == "Apps":
+                frame = AppsFrame(self.content, self, panel)
             elif name == "STATE":
                 frame = StateFrame(self.content, self, panel)
             else:
