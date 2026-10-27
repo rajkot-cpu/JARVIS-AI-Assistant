@@ -54,7 +54,6 @@ def main() -> int:
     bridge = bridge_api.Bridge(panel_api.Panel(root))
     # Serve ui/ via pywebview's local HTTP server (127.0.0.1) instead of file://,
     # so WebView2 allows ES module imports (Three.js). Relative URL resolves from HERE.
-    import os
     os.chdir(HERE)
     import webview
     window = webview.create_window(
