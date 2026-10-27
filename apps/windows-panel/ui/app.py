@@ -3,6 +3,8 @@ import customtkinter as ctk
 from theme import COLORS
 from ui.home import HomeFrame
 from ui.state_view import StateFrame
+from ui.skills import SkillsFrame
+from ui.policy import PolicyFrame
 
 TABS = ["Home", "Skills", "POLICY", "Logs", "Apps", "STATE"]
 
@@ -40,6 +42,10 @@ class JarvisApp(ctk.CTk):
             self.nav_buttons[name] = btn
             if name == "Home":
                 frame = HomeFrame(self.content, self, panel)
+            elif name == "Skills":
+                frame = SkillsFrame(self.content, self, panel)
+            elif name == "POLICY":
+                frame = PolicyFrame(self.content, self, panel)
             elif name == "STATE":
                 frame = StateFrame(self.content, self, panel)
             else:
