@@ -80,7 +80,10 @@ export function createDesk(containerEl) {
   actions.append(muteRow);
 
   // Keep plate interactions from driving orbit
-  [status, brief, actions].forEach((p) => p.addEventListener("pointerdown", (e) => e.stopPropagation()));
+  [status, brief, actions].forEach((p) => {
+    p.addEventListener("pointerdown", (e) => e.stopPropagation());
+    p.addEventListener("wheel", (e) => e.stopPropagation()); // let .brief-text scroll without zooming orbit
+  });
 
   const place = (node, x, y, z) => { const o = new CSS2DObject(node); o.position.set(x, y, z); scene.add(o); return o; };
   place(status, 0, 0.3, 1.5);   glow(0, 1.5, 2.2);

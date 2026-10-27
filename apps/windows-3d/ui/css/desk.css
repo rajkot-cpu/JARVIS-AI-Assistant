@@ -25,3 +25,11 @@ html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--
 .mute-row input{accent-color:var(--gold)}
 #banner{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:10;padding:6px 14px;border:1px solid var(--danger);background:rgba(255,59,48,.12);color:var(--danger);font-size:13px;border-radius:4px;display:none}
 #banner.show{display:block}
+#banner.info{border-color:var(--cyan);background:rgba(56,212,255,.12);color:var(--cyan)}
+.r3-overlay{position:fixed;inset:0;z-index:20;background:rgba(4,7,11,.78);display:flex;align-items:center;justify-content:center}
+.r3-card{background:var(--panel);border:1px solid var(--cyan);border-radius:6px;padding:18px 22px;max-width:420px;color:var(--text);box-shadow:0 0 24px rgba(56,212,255,.25)}
+.r3-card h2{margin:0 0 10px;color:var(--gold);font-size:16px;letter-spacing:.08em}
+.r3-card p{margin:0 0 16px;font-size:13px;line-height:1.4}
+.r3-row{display:flex;gap:10px;justify-content:flex-end}
+.r3-row button{background:transparent;color:var(--cyan);border:1px solid var(--cyan);padding:6px 14px;border-radius:4px;cursor:pointer}
+.r3-row button.cancel{color:var(--muted);border-color:var(--muted)}
