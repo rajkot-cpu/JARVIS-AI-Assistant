@@ -1,4 +1,4 @@
-# Host permission rules — DRAFT (pending_user_approval)
+# Host permission rules — APPROVED 2026-10-28 by Dr Chandan kumar
 
 ## This host: Grok Bot box (Debian 13)
 - Workspace: /home/box/jarvis (~/jarvis). Reads/writes only here unless POLICY.yaml grants more.

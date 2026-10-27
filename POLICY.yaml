@@ -1,5 +1,8 @@
-# STARK OS POLICY — DRAFT. Only the user (Dr Chandan kumar) edits/approves this file.
-status: draft_pending_approval
+# STARK OS POLICY — APPROVED. Only the user (Dr Chandan kumar) edits/approves this file.
+status: approved
+approved_at: "2026-10-28 (Asia/Calcutta)"
+approved_by: Dr Chandan kumar
+approval_note: "host/permission-rules.md approved at the same time (widget answer t2s3)"
 host: grok-bot-box-debian13
 notes: "First-run intake questions skipped 2026-10-28; values below are conservative placeholders."
 autonomy:                    # L0 observe, L1 advise, L2 act with preview, L3 standing scope
