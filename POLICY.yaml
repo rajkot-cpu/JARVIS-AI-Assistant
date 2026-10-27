@@ -30,5 +30,5 @@ budget:
   per_task_usd: 2
 schedule:
   daily_brief: "07:30"       # Asia/Calcutta; pending_user_approval
-  quiet_hours: TBD           # pending_user_approval
+  quiet_hours: "22:00-07:00"     # Asia/Calcutta; set in polish pass (t4u); 07:30 brief fires after end
 timezone: Asia/Calcutta

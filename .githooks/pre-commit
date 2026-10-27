@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# STARK OS pre-commit: runs scripts/precommit_smoke.sh; blocks commit on failure.
+/home/box/jarvis/scripts/precommit_smoke.sh || { echo "pre-commit: smoke FAILED — commit blocked"; exit 1; }

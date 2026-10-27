@@ -14,3 +14,4 @@
 {"time": "2026-10-28T02:27:49+05:30", "task": "box-install-harden", "action": "git_merge_ff", "result": "main ff to harden branch", "undo": "git reset to 550d039 (needs approval)"}
 {"time": "2026-10-28T02:28:45+05:30", "task": "backup", "action": "tar_backup_workspace", "result": "backups/jarvis-backup-20261028-022831.tar.gz RESTORE_TEST OK", "undo": "rm that backup file"}
 {"time": "2026-10-28T02:29:06+05:30", "task": "day4-live-launch", "action": "launch_chrome_and_terminal", "result": "verified both open on desktop; chrome ToS dialog first-run; not signed in", "undo": "quit with JARVIS_ALLOW_QUIT=1 via quit_app.sh"}
+{"time": "2026-10-28T02:32:29+05:30", "task": "polish-pass", "action": "add_quiet_hours_hook_evals_karen_edith", "result": "all smoke/evals PASS", "undo": "git revert polish commit (needs approval)"}
