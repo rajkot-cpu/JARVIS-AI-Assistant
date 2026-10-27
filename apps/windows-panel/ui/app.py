@@ -1,0 +1,54 @@
+"""JARVIS main shell window: left nav + swappable content frames."""
+import customtkinter as ctk
+from theme import COLORS
+
+TABS = ["Home", "Skills", "POLICY", "Logs", "Apps", "STATE"]
+
+
+class JarvisApp(ctk.CTk):
+    def __init__(self, panel):
+        super().__init__()
+        self.panel = panel
+        self.title("JARVIS // STARK OS")
+        self.geometry("1100x700")
+        self.configure(fg_color=COLORS["bg"])
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+
+        self.banner = ctk.CTkLabel(self, text="", text_color=COLORS["cyan"], anchor="w")
+        self.banner.grid(row=0, column=0, columnspan=2, sticky="ew", padx=12, pady=(8, 0))
+
+        nav = ctk.CTkFrame(self, fg_color=COLORS["panel"], width=180)
+        nav.grid(row=1, column=0, sticky="ns", padx=(12, 6), pady=12)
+        ctk.CTkLabel(nav, text="J.A.R.V.I.S", text_color=COLORS["gold"],
+                     font=ctk.CTkFont(size=18, weight="bold")).pack(padx=16, pady=(16, 12))
+
+        self.content = ctk.CTkFrame(self, fg_color=COLORS["panel"])
+        self.content.grid(row=1, column=1, sticky="nsew", padx=(6, 12), pady=12)
+        self.content.grid_columnconfigure(0, weight=1)
+        self.content.grid_rowconfigure(0, weight=1)
+
+        self.nav_buttons = {}
+        self.frames = {}
+        for name in TABS:
+            btn = ctk.CTkButton(nav, text=name, fg_color="transparent", text_color=COLORS["text"],
+                                hover_color=COLORS["bg"], anchor="w",
+                                command=lambda n=name: self.show(n))
+            btn.pack(fill="x", padx=10, pady=3)
+            self.nav_buttons[name] = btn
+            frame = ctk.CTkFrame(self.content, fg_color="transparent")
+            ctk.CTkLabel(frame, text=f"{name} — coming soon", text_color=COLORS["muted"]).pack(pady=40)
+            self.frames[name] = frame
+        self.current = None
+        self.show("Home")
+
+    def show(self, name: str):
+        if self.current:
+            self.frames[self.current].grid_forget()
+            self.nav_buttons[self.current].configure(text_color=COLORS["text"])
+        self.frames[name].grid(row=0, column=0, sticky="nsew")
+        self.nav_buttons[name].configure(text_color=COLORS["cyan"])
+        self.current = name
+
+    def set_banner(self, text: str, error: bool = False):
+        self.banner.configure(text=text, text_color=COLORS["danger"] if error else COLORS["cyan"])
