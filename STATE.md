@@ -6,6 +6,7 @@ Last updated: 2026-10-28 ~02:30 (Asia/Calcutta)
 - Day-1 MVP and Day 2–3 read-only skills are complete on this host.
 
 ## Status
+- Day-to-day loop ready on box: `./scripts/workday_start.sh`; 07:30 routine prompt refreshed for calendar+mail cache.
 - Polish pass 2026-10-28 (branch jarvis/chore/polish-pass): quiet hours 22:00-07:00 IST + in_quiet_hours.sh; pre-commit hook (precommit_smoke.sh ~1.5s); evals 03/05/06/07 runnable & PASS; KAREN karen_smoke.sh + health-audit skill; EDITH secret scan; session_start shows branch/POLICY/quiet/backup; Chrome first-run note.
 - Live app launch (Chrome + xfce4-terminal) verified on box desktop 2026-10-28; backup script + first tarball restore-tested.
 - Day 1: complete (exit tests PASS). POLICY.yaml and host/permission-rules.md approved 2026-10-28 by Dr Chandan kumar.

@@ -20,3 +20,4 @@
 {"time": "2026-10-28T02:39:26+05:30", "task": "workday-start", "action": "write_brief", "result": "reports/2026-10-28.md", "undo": "git checkout reports/2026-10-28.md"}
 {"time": "2026-10-28T02:39:39+05:30", "task": "day-to-day-ops", "action": "connector_read_calendar_mail", "result": "cache written (gitignored), read-only", "undo": "git revert"}
 {"time": "2026-10-28T02:39:39+05:30", "task": "day-to-day-ops", "action": "build_day_to_day_ops", "result": "workday_start, assemble_brief, checklist, eval_06b", "undo": "git revert"}
+{"time": "2026-10-28T02:40:21+05:30", "task": "daily-brief-routine", "action": "update_routine_prompt", "result": "jarvis-daily-brief-07-30 now refreshes agenda then workday_start", "undo": "UpdateRoutine revert to prior prompt"}

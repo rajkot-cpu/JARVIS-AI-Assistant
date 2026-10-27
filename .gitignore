@@ -11,3 +11,5 @@ Thumbs.db
 # logs/audit.jsonl and STATE.md are intentionally tracked
 backups/
 reports/_cache/
+reports/*-karen.md
+reports/*-day*-exit.md
