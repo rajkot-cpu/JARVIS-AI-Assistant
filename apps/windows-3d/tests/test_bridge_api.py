@@ -62,5 +62,38 @@ class TestBridgeReads(unittest.TestCase):
         self.assertIn("Hello", self.bridge.get_brief()["data"]["text"])
 
 
+class TestBridgeActions(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = _make_root(Path(self.tmp.name))
+        self.panel = panel_api.Panel(self.root)
+        self.bridge = bridge_api.Bridge(self.panel)
+        # voice prefs path
+        import voice
+        voice.load_prefs(self.root)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_mute_roundtrip(self):
+        import voice
+        self.assertFalse(self.bridge.get_mute()["data"]["muted"])
+        self.bridge.set_mute(True)
+        self.assertTrue(voice.is_muted())
+        self.assertTrue(self.bridge.get_mute()["data"]["muted"])
+
+    def test_workday_dry_returns_dict(self):
+        # May fail scripts on Linux box — assert shape only; mock Panel.workday
+        self.panel.workday = lambda dry=False: (0, "ok", "")
+        r = self.bridge.workday(dry=True)
+        self.assertTrue(r["ok"])
+        self.assertEqual(r["code"], 0)
+
+    def test_session_start_shape(self):
+        self.panel.session_start = lambda: (0, "ok", "")
+        r = self.bridge.session_start()
+        self.assertTrue(r["ok"])
+
+
 if __name__ == "__main__":
     unittest.main()

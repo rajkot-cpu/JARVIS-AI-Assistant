@@ -36,3 +36,30 @@ class Bridge:
             return {"ok": True, "data": {"text": self.panel.today_brief() or ""}}
         except Exception as e:
             return {"ok": False, "error": str(e)}
+
+    def session_start(self) -> dict:
+        try:
+            code, out, err = self.panel.session_start()
+            if code == 0:
+                return {"ok": True, "code": 0, "data": {"out": out}}
+            return {"ok": False, "code": code, "error": (err or out or f"exit {code}").strip()}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def workday(self, dry: bool = True) -> dict:
+        try:
+            code, out, err = self.panel.workday(dry=bool(dry))
+            if code == 0:
+                return {"ok": True, "code": 0, "data": {"out": out, "dry": bool(dry)}}
+            return {"ok": False, "code": code, "error": (err or out or f"exit {code}").strip()}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def get_mute(self) -> dict:
+        import voice
+        return {"ok": True, "data": {"muted": bool(voice.is_muted())}}
+
+    def set_mute(self, muted: bool = False) -> dict:
+        import voice
+        voice.set_muted(bool(muted))
+        return {"ok": True, "data": {"muted": bool(voice.is_muted())}}
