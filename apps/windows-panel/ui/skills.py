@@ -18,12 +18,12 @@ class SkillsFrame(ctk.CTkFrame):
 
         top = ctk.CTkFrame(self, fg_color="transparent")
         top.grid(row=0, column=0, columnspan=2, sticky="ew", padx=12, pady=(12, 6))
-        ctk.CTkLabel(top, text="SKILLS", text_color=COLORS["gold"]).pack(side="left")
+        ctk.CTkLabel(top, text="SKILLS", text_color=COLORS["cyan"]).pack(side="left")
         ctk.CTkButton(top, text="Refresh", fg_color=COLORS["panel"], text_color=COLORS["cyan"],
                       border_color=COLORS["cyan"], border_width=1, hover_color=COLORS["bg"],
                       command=self.refresh).pack(side="right")
         self.run_btn = ctk.CTkButton(top, text="Run", fg_color=COLORS["cyan"], text_color=COLORS["bg"],
-                                     hover_color=COLORS["gold"], command=self.run_selected)
+                                     hover_color=COLORS["cyan_hover"], command=self.run_selected)
         self.run_btn.pack(side="right", padx=8)
 
         self.listbox = tk.Listbox(self, bg=COLORS["bg"], fg=COLORS["text"], selectbackground=COLORS["cyan"],

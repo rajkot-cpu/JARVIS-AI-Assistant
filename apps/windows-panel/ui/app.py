@@ -46,12 +46,18 @@ class JarvisApp(ctk.CTk):
         self.content.grid_rowconfigure(0, weight=1)
 
         self.nav_buttons = {}
+        self.nav_bars = {}
         self.frames = {}
         for name in TABS:
             btn = ctk.CTkButton(nav, text=name, fg_color="transparent", text_color=COLORS["text"],
                                 hover_color=COLORS["bg"], anchor="w",
                                 command=lambda n=name: self.show(n))
-            btn.pack(fill="x", padx=10, pady=3)
+            row = ctk.CTkFrame(nav, fg_color="transparent")
+            row.pack(fill="x", padx=(6, 10), pady=3)
+            bar = ctk.CTkFrame(row, width=2, height=28, fg_color="transparent", corner_radius=0)
+            bar.pack(side="left", fill="y")
+            btn.pack(in_=row, side="left", fill="x", expand=True, padx=(4, 0))
+            self.nav_bars[name] = bar
             self.nav_buttons[name] = btn
             if name == "Home":
                 frame = HomeFrame(self.content, self, panel)
@@ -77,8 +83,10 @@ class JarvisApp(ctk.CTk):
         if self.current:
             self.frames[self.current].grid_forget()
             self.nav_buttons[self.current].configure(text_color=COLORS["text"])
+            self.nav_bars[self.current].configure(fg_color="transparent")
         self.frames[name].grid(row=0, column=0, sticky="nsew")
         self.nav_buttons[name].configure(text_color=COLORS["cyan"])
+        self.nav_bars[name].configure(fg_color=COLORS["cyan"])
         self.current = name
         if hasattr(self.frames[name], "refresh"):
             self.frames[name].refresh()

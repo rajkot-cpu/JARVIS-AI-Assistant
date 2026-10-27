@@ -12,7 +12,7 @@ class StateFrame(ctk.CTkFrame):
         self.grid_rowconfigure(1, weight=1)
         top = ctk.CTkFrame(self, fg_color="transparent")
         top.grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 6))
-        ctk.CTkLabel(top, text="STATE.md  (read-only)", text_color=COLORS["gold"]).pack(side="left")
+        ctk.CTkLabel(top, text="STATE.md  (read-only)", text_color=COLORS["cyan"]).pack(side="left")
         ctk.CTkButton(top, text="Refresh", fg_color=COLORS["panel"], text_color=COLORS["cyan"],
                       border_color=COLORS["cyan"], border_width=1, hover_color=COLORS["bg"],
                       command=self.refresh).pack(side="right")

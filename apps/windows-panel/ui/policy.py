@@ -17,12 +17,12 @@ class PolicyFrame(ctk.CTkFrame):
 
         top = ctk.CTkFrame(self, fg_color="transparent")
         top.grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 6))
-        ctk.CTkLabel(top, text="POLICY", text_color=COLORS["gold"]).pack(side="left")
+        ctk.CTkLabel(top, text="POLICY", text_color=COLORS["cyan"]).pack(side="left")
         btn = dict(fg_color=COLORS["panel"], text_color=COLORS["cyan"], border_color=COLORS["cyan"],
                    border_width=1, hover_color=COLORS["bg"])
         self.cancel_btn = ctk.CTkButton(top, text="Cancel", command=self.cancel, **btn)
         self.save_btn = ctk.CTkButton(top, text="Save", fg_color=COLORS["cyan"], text_color=COLORS["bg"],
-                                      hover_color=COLORS["gold"], command=self.save)
+                                      hover_color=COLORS["cyan_hover"], command=self.save)
         self.edit_btn = ctk.CTkButton(top, text="Edit", command=self.start_edit, **btn)
         for b in (self.cancel_btn, self.save_btn, self.edit_btn):
             b.pack(side="right", padx=4)

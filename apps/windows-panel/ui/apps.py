@@ -16,12 +16,12 @@ class AppsFrame(ctk.CTkFrame):
 
         top = ctk.CTkFrame(self, fg_color="transparent")
         top.grid(row=0, column=0, columnspan=2, sticky="ew", padx=12, pady=(12, 6))
-        ctk.CTkLabel(top, text="APPS", text_color=COLORS["gold"]).pack(side="left")
+        ctk.CTkLabel(top, text="APPS", text_color=COLORS["cyan"]).pack(side="left")
         ctk.CTkButton(top, text="Refresh", fg_color=COLORS["panel"], text_color=COLORS["cyan"],
                       border_color=COLORS["cyan"], border_width=1, hover_color=COLORS["bg"],
                       command=self.refresh).pack(side="right")
         ctk.CTkButton(top, text="Launch", fg_color=COLORS["cyan"], text_color=COLORS["bg"],
-                      hover_color=COLORS["gold"], command=self.launch_selected).pack(side="right", padx=8)
+                      hover_color=COLORS["cyan_hover"], command=self.launch_selected).pack(side="right", padx=8)
 
         ctk.CTkLabel(self, text="Allowlisted (POLICY apps_allowlist)", text_color=COLORS["cyan"],
                      anchor="w").grid(row=1, column=0, sticky="ew", padx=12)

@@ -11,32 +11,44 @@ class HomeFrame(ctk.CTkFrame):
         self.app = app
         self.panel = panel
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=1)
 
-        strip = ctk.CTkFrame(self, fg_color=COLORS["bg"])
-        strip.grid(row=0, column=0, sticky="ew", padx=12, pady=(12, 6))
+        hero = ctk.CTkFrame(self, fg_color="transparent")
+        hero.grid(row=0, column=0, sticky="ew", padx=12, pady=(16, 4))
+        self.primary = ctk.CTkLabel(hero, text="", text_color=COLORS["cyan"], anchor="w",
+                                    font=ctk.CTkFont(size=30, weight="bold"))
+        self.primary.pack(anchor="w", padx=10)
+        self.primary_line = ctk.CTkFrame(hero, height=1, fg_color=COLORS["cyan"], corner_radius=0)
+        self.primary_line.pack(fill="x", padx=10, pady=(4, 0))
+
+        strip = ctk.CTkFrame(self, fg_color="transparent")
+        strip.grid(row=1, column=0, sticky="ew", padx=12, pady=(2, 6))
         self.status_labels = {}
         for i, key in enumerate(["today", "policy", "quiet", "root"]):
-            lbl = ctk.CTkLabel(strip, text="", text_color=COLORS["cyan"], anchor="w")
+            lbl = ctk.CTkLabel(strip, text="", text_color=COLORS["muted"], anchor="w",
+                               font=ctk.CTkFont(size=11))
             lbl.grid(row=0, column=i, padx=10, pady=6, sticky="w")
             self.status_labels[key] = lbl
 
         btns = ctk.CTkFrame(self, fg_color="transparent")
-        btns.grid(row=1, column=0, sticky="ew", padx=12, pady=6)
+        btns.grid(row=2, column=0, sticky="ew", padx=12, pady=6)
         for text, cmd in [("Session Start", self.on_session_start),
                           ("Dry-run Workday", self.on_dry_workday),
                           ("Start Workday", self.on_workday),
                           ("Regenerate Brief", self.on_write_brief)]:
-            ctk.CTkButton(btns, text=text, fg_color=COLORS["panel"], text_color=COLORS["cyan"],
+            primary = text == "Start Workday"
+            ctk.CTkButton(btns, text=text,
+                          fg_color=COLORS["cyan"] if primary else COLORS["panel"],
+                          text_color=COLORS["bg"] if primary else COLORS["cyan"],
                           border_color=COLORS["cyan"], border_width=1,
-                          hover_color=COLORS["bg"], command=cmd).pack(side="left", padx=6)
+                          hover_color=COLORS["cyan_hover"] if primary else COLORS["bg"], command=cmd).pack(side="left", padx=6)
         self.mute_var = ctk.BooleanVar(value=voice.is_muted())
         ctk.CTkSwitch(btns, text="Mute", variable=self.mute_var, text_color=COLORS["gold"],
                       progress_color=COLORS["cyan"],
                       command=lambda: voice.set_muted(self.mute_var.get())).pack(side="right", padx=6)
 
         self.brief = ctk.CTkTextbox(self, fg_color=COLORS["bg"], text_color=COLORS["text"])
-        self.brief.grid(row=2, column=0, sticky="nsew", padx=12, pady=(6, 12))
+        self.brief.grid(row=3, column=0, sticky="nsew", padx=12, pady=(6, 12))
         self.refresh()
 
     def refresh(self):
@@ -46,6 +58,16 @@ class HomeFrame(ctk.CTkFrame):
         self.status_labels["policy"].configure(
             text=f"POLICY {'APPROVED' if ok else 'NOT APPROVED'}",
             text_color=COLORS["ok"] if ok else COLORS["danger"])
+        quiet = s.get("quiet_hours")
+        if not ok:
+            self.primary.configure(text="POLICY NOT APPROVED", text_color=COLORS["danger"])
+            self.primary_line.configure(fg_color=COLORS["danger"])
+        elif quiet:
+            self.primary.configure(text="QUIET HOURS", text_color=COLORS["gold"])
+            self.primary_line.configure(fg_color=COLORS["gold"])
+        else:
+            self.primary.configure(text="SYSTEMS NOMINAL", text_color=COLORS["cyan"])
+            self.primary_line.configure(fg_color=COLORS["cyan"])
         self.status_labels["quiet"].configure(
             text=f"QUIET {'ON' if s.get('quiet_hours') else 'OFF'}", text_color=COLORS["gold"])
         self.status_labels["root"].configure(text=f"ROOT {s.get('root', '')}", text_color=COLORS["muted"])
