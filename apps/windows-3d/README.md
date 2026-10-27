@@ -14,3 +14,12 @@ Produces `apps\Jarvis3D.exe` (PyInstaller onefile, entry `host_main.py`, `ui/` b
 - **WebView2 Evergreen Runtime is required** (pywebview `edgechromium` backend). Windows 11 ships it; otherwise install from Microsoft.
 - **Rebuild rule:** re-run `build_exe.ps1` whenever `ui/`, `bridge_api.py`, `host_main.py`, or the panel/scripts it bundles (`apps/windows-panel/panel_api.py`, `voice.py`, `scripts/win/*.py`) change — the exe embeds frozen copies.
 - **UI load path:** `host_main.py` loads `ui/index.html` via a relative URL (`url="ui/index.html"`) with `webview.start(http_server=True)`, so pywebview serves the `ui/` folder over its local HTTP server on `http://127.0.0.1` (local-only; no remote URLs). This avoids WebView2 blocking ES modules (Three.js) on `file://`. The process chdirs to the script/bundle dir so `ui/` resolves when frozen.
+
+## Phase 1 — done when
+
+1. Double-click `Jarvis3D.exe` on `chandan` → desk loads offline.
+2. Orbit / zoom works; three plates readable.
+3. Status matches jarvis root; brief shows today’s file or empty state.
+4. Session Start, Dry-run Workday, Mute succeed (or show clear error); audit lines appear for writes.
+5. Start Workday prompts R3; cancel leaves no workday start; confirm runs and refreshes status/brief.
+6. `Jarvis.exe` still opens and covers Skills / POLICY / Logs / Apps / STATE.
