@@ -1,0 +1,11 @@
+.env
+.env.*
+*.key
+*.pem
+secrets/
+credentials*
+.DS_Store
+Thumbs.db
+*~
+*.swp
+# logs/audit.jsonl and STATE.md are intentionally tracked

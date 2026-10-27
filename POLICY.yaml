@@ -1,0 +1,31 @@
+# STARK OS POLICY — DRAFT. Only the user (Dr Chandan kumar) edits/approves this file.
+status: draft_pending_approval
+host: grok-bot-box-debian13
+notes: "First-run intake questions skipped 2026-10-28; values below are conservative placeholders."
+autonomy:                    # L0 observe, L1 advise, L2 act with preview, L3 standing scope
+  files_read: L2             # pending_user_approval (example was L3)
+  files_write: L2
+  apps_launch: L1
+  github: L1
+  email_calendar: L0
+  delete: L0                 # only fixtures/ with JARVIS_ALLOW_DELETE=1 for tests
+scopes:
+  read: [/home/box/jarvis]          # pending_user_approval: add project folders
+  write: [/home/box/jarvis]         # project folders: feature branches only, via git
+  delete_test_only: [/home/box/jarvis/fixtures]
+apps_allowlist: [chrome, terminal]  # pending_user_approval
+restricted:                          # never read — pending_user_approval: add patient/finance/tax/legal paths
+  - ~/patients
+  - ~/finance
+  - ~/.ssh
+  - ~/.gnupg
+  - PLACEHOLDER_patient_records_path
+  - PLACEHOLDER_banking_brokerage_path
+  - PLACEHOLDER_tax_legal_path
+budget:
+  monthly_usd: 50
+  per_task_usd: 2
+schedule:
+  daily_brief: "07:30"       # Asia/Calcutta; pending_user_approval
+  quiet_hours: TBD           # pending_user_approval
+timezone: Asia/Calcutta
