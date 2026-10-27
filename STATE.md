@@ -6,6 +6,7 @@ Last updated: 2026-10-28 ~02:30 (Asia/Calcutta)
 - Day-1 MVP and Day 2–3 read-only skills are complete on this host.
 
 ## Status
+- Live app launch (Chrome + xfce4-terminal) verified on box desktop 2026-10-28; backup script + first tarball restore-tested.
 - Day 1: complete (exit tests PASS). POLICY.yaml and host/permission-rules.md approved 2026-10-28 by Dr Chandan kumar.
 - Day 2–3: complete (16/16 exit tests PASS). Merged `jarvis/feat/day2-readonly-skills` into `main` at `60112fa` (user OK t2s7).
 - Draft-only Daily Brief routine saved: every day around 07:30 Asia/Calcutta → writes `reports/YYYY-MM-DD.md` and posts a short receipt in this chat; skips quietly if today's report already exists.
