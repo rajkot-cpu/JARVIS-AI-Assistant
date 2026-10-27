@@ -7,3 +7,4 @@
 {"time": "2026-10-28T02:19:09+05:30", "task": "day2_skills", "action": "day2_exit_tests", "result": "RESULT: 16 passed, 0 failed", "report": "reports/2026-10-28-day2-exit.md", "undo": "n/a (read-only tests)"}
 {"time": "2026-10-28T02:24:34+05:30", "task": "day2-merge", "action": "git_merge_ff", "result": "main fast-forward to 60112fa (day2-readonly-skills)", "undo": "git reset --hard 215416e on main (destructive; needs R4)"}
 {"time": "2026-10-28T02:24:34+05:30", "task": "daily-brief-routine", "action": "create_routine", "result": "JARVIS Daily Brief 07:30 saved; cron 30 7 * * *; draft-only to reports/", "undo": "pause or delete routine jarvis-daily-brief-07-30"}
+{"time": "2026-10-28T02:27:21+05:30", "task": "box-install-harden", "action": "apps_allowlist_updated", "result": "probed binaries; allowlist chrome=google-chrome, terminal=xfce4-terminal", "undo": "revert POLICY.yaml line"}

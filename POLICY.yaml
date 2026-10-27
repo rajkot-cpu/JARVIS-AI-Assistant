@@ -16,7 +16,7 @@ scopes:
   read: [/home/box/jarvis]          # pending_user_approval: add project folders
   write: [/home/box/jarvis]         # project folders: feature branches only, via git
   delete_test_only: [/home/box/jarvis/fixtures]
-apps_allowlist: [chrome, terminal]  # pending_user_approval
+apps_allowlist: [chrome, terminal]  # chrome=google-chrome, terminal=xfce4-terminal (probed 2026-10-28; firefox/chromium/code/cursor absent)
 restricted:                          # never read — pending_user_approval: add patient/finance/tax/legal paths
   - ~/patients
   - ~/finance
