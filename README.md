@@ -22,3 +22,9 @@ skills/ (file-search, summarize-doc, daily-brief-draft, app-control) · roles/ (
 - Pre-commit hook `.githooks/pre-commit` → `scripts/precommit_smoke.sh` (EDITH scan, day1/2/4, evals 03/05/07; ~2s). Enable: `git config core.hooksPath .githooks`.
 - Evals 03/05/06/07 runnable (`scripts/eval_0*.sh`), included in `run_golden_evals.sh`.
 - KAREN: `scripts/karen_smoke.sh`; EDITH: `scripts/edith_scan.sh`; helpers `branch_name.sh`, `retry_guard.sh`.
+
+## Day-to-day use
+- Morning: `./scripts/workday_start.sh` (or let the 07:30 IST routine run it). Report lands in `reports/YYYY-MM-DD.md`.
+- Calendar/Gmail sections come from `reports/_cache/*.json`, refreshed by JARVIS via connectors (`scripts/refresh_agenda_cache.md`); without cache they show UNAVAILABLE and the brief still works offline.
+- Health: `./scripts/day_to_day_checklist.sh`. Eval: `./scripts/eval_06b_enriched_brief.sh`.
+- All communications are draft-only; sends need an R3 approval.

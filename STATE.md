@@ -15,6 +15,10 @@ Last updated: 2026-10-28 ~02:30 (Asia/Calcutta)
 - Install on user computer: not started.
 - Desktop `chandan` still disconnected; OnePlus connected; Docker unavailable.
 
+## Status addendum (day-to-day ops)
+- workday-start skill, enriched brief (calendar+Gmail read-only cache), day_to_day_checklist, eval_06b live.
+- ROUTINE PROMPT NEEDS PARENT REFRESH: apply scripts/routine-prompts/daily-brief-0730.md via UpdateRoutine.
+
 ## Next steps
 1. Let morning brief run (or run `skills/daily-brief-draft/scripts/brief.sh --write-report` for a manual dry run).
 2. Optionally fill intake (OS, daily apps, top three tasks) and real restricted-folder paths in POLICY.
