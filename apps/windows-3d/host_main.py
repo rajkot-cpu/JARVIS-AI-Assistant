@@ -52,17 +52,20 @@ def main() -> int:
         return 2
     voice.load_prefs(root)
     bridge = bridge_api.Bridge(panel_api.Panel(root))
-    ui = HERE / "ui" / "index.html"
+    # Serve ui/ via pywebview's local HTTP server (127.0.0.1) instead of file://,
+    # so WebView2 allows ES module imports (Three.js). Relative URL resolves from HERE.
+    import os
+    os.chdir(HERE)
     import webview
     window = webview.create_window(
         "JARVIS 3D // STARK OS",
-        url=ui.as_uri(),
+        url="ui/index.html",
         js_api=Api(bridge),
         width=1280,
         height=800,
         background_color="#04070b",
     )
-    webview.start(gui="edgechromium")
+    webview.start(gui="edgechromium", http_server=True)
     return 0
 
 
