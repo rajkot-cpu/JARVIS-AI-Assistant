@@ -13,3 +13,4 @@ backups/
 reports/_cache/
 reports/*-karen.md
 reports/*-day*-exit.md
+.worktrees/
