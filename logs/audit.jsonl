@@ -5,3 +5,5 @@
 {"time": "2026-10-28T02:18:49+05:30", "task": "policy", "action": "policy_approved", "result": "ok", "files": ["POLICY.yaml", "host/permission-rules.md"], "approved_by": "Dr Chandan kumar", "ref": "t2s3", "undo": "git revert"}
 {"time": "2026-10-28T02:18:49+05:30", "task": "day2_skills", "action": "day2_skills_started", "result": "ok", "branch": "jarvis/feat/day2-readonly-skills", "undo": "git branch -D (with approval)"}
 {"time": "2026-10-28T02:19:09+05:30", "task": "day2_skills", "action": "day2_exit_tests", "result": "RESULT: 16 passed, 0 failed", "report": "reports/2026-10-28-day2-exit.md", "undo": "n/a (read-only tests)"}
+{"time": "2026-10-28T02:24:34+05:30", "task": "day2-merge", "action": "git_merge_ff", "result": "main fast-forward to 60112fa (day2-readonly-skills)", "undo": "git reset --hard 215416e on main (destructive; needs R4)"}
+{"time": "2026-10-28T02:24:34+05:30", "task": "daily-brief-routine", "action": "create_routine", "result": "JARVIS Daily Brief 07:30 saved; cron 30 7 * * *; draft-only to reports/", "undo": "pause or delete routine jarvis-daily-brief-07-30"}
