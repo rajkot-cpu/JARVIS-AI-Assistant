@@ -1,6 +1,8 @@
 """JARVIS main shell window: left nav + swappable content frames."""
 import customtkinter as ctk
 from theme import COLORS
+from ui.home import HomeFrame
+from ui.state_view import StateFrame
 
 TABS = ["Home", "Skills", "POLICY", "Logs", "Apps", "STATE"]
 
@@ -36,8 +38,13 @@ class JarvisApp(ctk.CTk):
                                 command=lambda n=name: self.show(n))
             btn.pack(fill="x", padx=10, pady=3)
             self.nav_buttons[name] = btn
-            frame = ctk.CTkFrame(self.content, fg_color="transparent")
-            ctk.CTkLabel(frame, text=f"{name} — coming soon", text_color=COLORS["muted"]).pack(pady=40)
+            if name == "Home":
+                frame = HomeFrame(self.content, self, panel)
+            elif name == "STATE":
+                frame = StateFrame(self.content, self, panel)
+            else:
+                frame = ctk.CTkFrame(self.content, fg_color="transparent")
+                ctk.CTkLabel(frame, text=f"{name} — coming soon", text_color=COLORS["muted"]).pack(pady=40)
             self.frames[name] = frame
         self.current = None
         self.show("Home")
@@ -49,6 +56,8 @@ class JarvisApp(ctk.CTk):
         self.frames[name].grid(row=0, column=0, sticky="nsew")
         self.nav_buttons[name].configure(text_color=COLORS["cyan"])
         self.current = name
+        if hasattr(self.frames[name], "refresh"):
+            self.frames[name].refresh()
 
     def set_banner(self, text: str, error: bool = False):
         self.banner.configure(text=text, text_color=COLORS["danger"] if error else COLORS["cyan"])
