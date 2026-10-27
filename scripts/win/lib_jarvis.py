@@ -1,5 +1,5 @@
 from __future__ import annotations
-import json, re, sys
+import json, os, re, sys
 from datetime import datetime, time, timezone, timedelta
 from pathlib import Path
 
@@ -15,6 +15,9 @@ def fix_stdout() -> None:
 fix_stdout()
 
 def jarvis_home() -> Path:
+    env = os.environ.get("JARVIS_HOME", "").strip()
+    if env:
+        return Path(env).expanduser().resolve()
     return Path(r"C:\Users\rajk1\jarvis")
 
 def now_ist() -> datetime:
