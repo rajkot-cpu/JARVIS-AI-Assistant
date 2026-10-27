@@ -1,5 +1,6 @@
 # apps/windows-3d/tests/test_bridge_api.py
 import sys, tempfile, unittest
+from unittest import mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -26,7 +27,8 @@ def _make_root(tmp: Path, *, approved: bool = True, quiet: str = "22:00-07:00") 
 class TestBridgeReads(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
-        self.root = _make_root(Path(self.tmp.name), approved=True)
+        # 00:00-00:00 = never quiet, so the test is clock-independent
+        self.root = _make_root(Path(self.tmp.name), approved=True, quiet="00:00-00:00")
         self.bridge = bridge_api.Bridge(panel_api.Panel(self.root))
 
     def tearDown(self):
@@ -45,6 +47,11 @@ class TestBridgeReads(unittest.TestCase):
         root = _make_root(Path(tempfile.mkdtemp()), approved=False)
         b = bridge_api.Bridge(panel_api.Panel(root))
         self.assertEqual(b.get_status()["data"]["headline"], "POLICY NOT APPROVED")
+
+    def test_headline_quiet_hours(self):
+        import lib_jarvis
+        with mock.patch.object(lib_jarvis, "quiet_hours_active", return_value=True):
+            self.assertEqual(self.bridge.get_status()["data"]["headline"], "QUIET HOURS")
 
     def test_get_brief_empty_then_text(self):
         r = self.bridge.get_brief()
