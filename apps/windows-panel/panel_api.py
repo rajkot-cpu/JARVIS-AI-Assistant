@@ -141,11 +141,16 @@ class Panel:
         with (ld / "audit.jsonl").open("a", encoding="utf-8") as f:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
-    def run_script(self, name: str, args: list[str] | None = None) -> tuple[int, str, str]:
+    def run_script(self, name: str, args: list[str] | None = None,
+                   in_process: bool | None = None) -> tuple[int, str, str]:
         import os, subprocess
         script = self.root / "scripts" / "win" / f"{name}.py"
         if not script.is_file():
             return 1, "", f"script not found: {script}"
+        if in_process is None:
+            in_process = bool(getattr(sys, "frozen", False))
+        if in_process:
+            return self._run_in_process(script, args or [])
         env = os.environ | {"JARVIS_HOME": str(self.root)}
         try:
             cp = subprocess.run([sys.executable, str(script), *(args or [])],
@@ -154,6 +159,39 @@ class Panel:
         except Exception as e:
             return 1, "", str(e)
         return cp.returncode, cp.stdout, cp.stderr
+
+    def _run_in_process(self, script: Path, args: list[str]) -> tuple[int, str, str]:
+        """Frozen-safe: execute script via runpy (sys.executable is Jarvis.exe)."""
+        import io, os, runpy, traceback
+        from contextlib import redirect_stdout, redirect_stderr
+        out, err = io.StringIO(), io.StringIO()
+        old_argv, old_cwd, old_path = sys.argv[:], os.getcwd(), sys.path[:]
+        old_home = os.environ.get("JARVIS_HOME")
+        os.environ["JARVIS_HOME"] = str(self.root)
+        sys.argv = [str(script), *args]
+        sys.path.insert(0, str(script.parent))
+        code = 0
+        try:
+            os.chdir(self.root)
+            with redirect_stdout(out), redirect_stderr(err):
+                try:
+                    runpy.run_path(str(script), run_name="__main__")
+                except SystemExit as e:
+                    c = e.code
+                    code = c if isinstance(c, int) else (0 if c is None else 1)
+                    if isinstance(c, str):
+                        err.write(c + "\n")
+                except Exception:
+                    code = 1
+                    traceback.print_exc(file=err)
+        finally:
+            sys.argv, sys.path = old_argv, old_path
+            os.chdir(old_cwd)
+            if old_home is None:
+                os.environ.pop("JARVIS_HOME", None)
+            else:
+                os.environ["JARVIS_HOME"] = old_home
+        return code, out.getvalue(), err.getvalue()
 
     def _run_audited(self, name: str, args: list[str] | None = None) -> tuple[int, str, str]:
         code, out, err = self.run_script(name, args)

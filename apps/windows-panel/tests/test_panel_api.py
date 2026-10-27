@@ -134,5 +134,21 @@ class TestActions(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertIn("REFUSED", out)
 
+    def test_run_script_in_process_frozen_path(self):
+        code, out, err = self.panel.run_script("block_delete", [str(self.root / "STATE.md")], in_process=True)
+        self.assertEqual(code, 2)
+        self.assertIn("REFUSED", out)
+        code, out, err = self.panel.run_script("block_delete", [str(self.root / "x.txt")], in_process=True)
+        self.assertEqual(code, 0)
+
+    def test_run_script_uses_in_process_when_frozen(self):
+        sys.frozen = True
+        try:
+            code, out, err = self.panel.block_delete(self.root / "STATE.md")
+        finally:
+            del sys.frozen
+        self.assertEqual(code, 2)
+        self.assertIn("REFUSED", out)
+
 if __name__ == "__main__":
     unittest.main()
