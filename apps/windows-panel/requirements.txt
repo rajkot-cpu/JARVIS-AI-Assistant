@@ -1,3 +1,6 @@
 customtkinter>=5.2.0
 pyyaml>=6.0
 pyinstaller>=6.0
+pyttsx3>=2.90
+# pywin32 (win32com/pythoncom) used for SAPI on Windows
+pywin32>=306; sys_platform == "win32"

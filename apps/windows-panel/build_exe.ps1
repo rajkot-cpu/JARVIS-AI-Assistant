@@ -11,6 +11,9 @@ python -m PyInstaller --noconfirm --clean --onefile --windowed --name Jarvis `
   --hidden-import lib_jarvis --hidden-import session_start --hidden-import brief `
   --hidden-import workday_start --hidden-import block_delete `
   --hidden-import yaml --hidden-import runpy --hidden-import argparse `
+  --hidden-import voice --hidden-import pyttsx3 --hidden-import pyttsx3.drivers --hidden-import pyttsx3.drivers.sapi5 `
+  --hidden-import win32com.client --hidden-import pythoncom `
+  --icon assets\jarvis.ico --add-data "assets;assets" `
   --collect-all customtkinter `
   main.py
 if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed" }
@@ -21,5 +24,6 @@ $ws = New-Object -ComObject WScript.Shell
 $sc = $ws.CreateShortcut("$desk\JARVIS.lnk")
 $sc.TargetPath = "$JarvisRoot\apps\Jarvis.exe"
 $sc.WorkingDirectory = "$JarvisRoot"
+$sc.IconLocation = "$JarvisRoot\apps\Jarvis.exe,0"
 $sc.Save()
 Write-Output "INSTALLED=$JarvisRoot\apps\Jarvis.exe"

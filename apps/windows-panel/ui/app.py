@@ -1,5 +1,8 @@
 """JARVIS main shell window: left nav + swappable content frames."""
+import sys
+from pathlib import Path
 import customtkinter as ctk
+import voice
 from theme import COLORS
 from ui.home import HomeFrame
 from ui.state_view import StateFrame
@@ -18,6 +21,14 @@ class JarvisApp(ctk.CTk):
         self.title("JARVIS // STARK OS")
         self.geometry("1100x700")
         self.configure(fg_color=COLORS["bg"])
+        try:
+            base = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
+            ico = base / "assets" / "jarvis.ico"
+            if ico.exists():
+                self.iconbitmap(str(ico))
+        except Exception:
+            pass
+        voice.load_prefs(panel.root)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
@@ -60,6 +71,7 @@ class JarvisApp(ctk.CTk):
             self.frames[name] = frame
         self.current = None
         self.show("Home")
+        self.after(600, lambda: voice.speak("JARVIS online. Systems nominal."))
 
     def show(self, name: str):
         if self.current:
@@ -73,3 +85,5 @@ class JarvisApp(ctk.CTk):
 
     def set_banner(self, text: str, error: bool = False):
         self.banner.configure(text=text, text_color=COLORS["danger"] if error else COLORS["cyan"])
+        if error:
+            voice.speak("Attention. " + text[:80])

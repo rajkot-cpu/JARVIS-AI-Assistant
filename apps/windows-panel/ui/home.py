@@ -2,6 +2,7 @@
 import customtkinter as ctk
 from theme import COLORS
 from ui import confirm
+import voice
 
 
 class HomeFrame(ctk.CTkFrame):
@@ -29,6 +30,10 @@ class HomeFrame(ctk.CTkFrame):
             ctk.CTkButton(btns, text=text, fg_color=COLORS["panel"], text_color=COLORS["cyan"],
                           border_color=COLORS["cyan"], border_width=1,
                           hover_color=COLORS["bg"], command=cmd).pack(side="left", padx=6)
+        self.mute_var = ctk.BooleanVar(value=voice.is_muted())
+        ctk.CTkSwitch(btns, text="Mute", variable=self.mute_var, text_color=COLORS["gold"],
+                      progress_color=COLORS["cyan"],
+                      command=lambda: voice.set_muted(self.mute_var.get())).pack(side="right", padx=6)
 
         self.brief = ctk.CTkTextbox(self, fg_color=COLORS["bg"], text_color=COLORS["text"])
         self.brief.grid(row=2, column=0, sticky="nsew", padx=12, pady=(6, 12))
@@ -54,6 +59,9 @@ class HomeFrame(ctk.CTkFrame):
         code, out, err = result
         if code == 0:
             self.app.set_banner(f"{label}: OK")
+            line = {"Dry-run Workday": "Dry run complete.", "Start Workday": "Workday started."}.get(label)
+            if line:
+                voice.speak(line)
         else:
             msg = (err or out or "").strip().splitlines()
             self.app.set_banner(f"{label} FAILED (exit {code}): {msg[-1] if msg else ''}", error=True)
