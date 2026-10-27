@@ -15,7 +15,7 @@ python -m PyInstaller --noconfirm --clean --onefile --windowed --name Jarvis3D `
   --hidden-import yaml --hidden-import runpy --hidden-import argparse `
   --hidden-import webview --hidden-import pyttsx3 --hidden-import pyttsx3.drivers --hidden-import pyttsx3.drivers.sapi5 `
   --hidden-import win32com.client --hidden-import pythoncom `
-  --icon ..\windows-panel\assets\jarvis.ico --add-data "ui;ui" `
+  --icon "$JarvisRoot\apps\windows-panel\assets\jarvis.ico" --add-data "ui;ui" `
   --collect-all webview `
   host_main.py
 if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed" }

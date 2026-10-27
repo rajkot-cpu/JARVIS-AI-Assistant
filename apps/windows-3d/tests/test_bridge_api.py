@@ -82,6 +82,15 @@ class TestBridgeActions(unittest.TestCase):
         self.assertTrue(voice.is_muted())
         self.assertTrue(self.bridge.get_mute()["data"]["muted"])
 
+    def test_mute_errors_return_ok_false(self):
+        import voice
+        with mock.patch.object(voice, "is_muted", side_effect=RuntimeError("boom")):
+            r = self.bridge.get_mute()
+            self.assertFalse(r["ok"]); self.assertIn("boom", r["error"])
+        with mock.patch.object(voice, "set_muted", side_effect=RuntimeError("boom2")):
+            r = self.bridge.set_mute(True)
+            self.assertFalse(r["ok"]); self.assertIn("boom2", r["error"])
+
     def test_workday_dry_returns_dict(self):
         # May fail scripts on Linux box — assert shape only; mock Panel.workday
         self.panel.workday = lambda dry=False: (0, "ok", "")

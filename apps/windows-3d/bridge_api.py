@@ -56,10 +56,16 @@ class Bridge:
             return {"ok": False, "error": str(e)}
 
     def get_mute(self) -> dict:
-        import voice
-        return {"ok": True, "data": {"muted": bool(voice.is_muted())}}
+        try:
+            import voice
+            return {"ok": True, "data": {"muted": bool(voice.is_muted())}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
 
     def set_mute(self, muted: bool = False) -> dict:
-        import voice
-        voice.set_muted(bool(muted))
-        return {"ok": True, "data": {"muted": bool(voice.is_muted())}}
+        try:
+            import voice
+            voice.set_muted(bool(muted))
+            return {"ok": True, "data": {"muted": bool(voice.is_muted())}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}

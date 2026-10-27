@@ -16,3 +16,9 @@ Frozen layout: host_main does os.chdir(HERE) before webview.start(http_server=Tr
 | 4 | Session Start / Dry-run / Mute + audit | DEFERRED | manual |
 | 5 | Start Workday R3 cancel/confirm | DEFERRED | manual |
 | 6 | Jarvis.exe still works | PASS (process) | Launched; title "JARVIS // STARK OS", alive after 8s; closed afterwards |
+
+## Pre-merge fix
+- bridge_api get_mute/set_mute wrapped in try/except → {ok: False, error}; new test test_mute_errors_return_ok_false.
+- app.js: desk.setBrief(b.data?.text ?? "").
+- build_exe.ps1: --icon "$JarvisRoot\apps\windows-panel\assets\jarvis.ico".
+- Verify: unittest discover → Ran 8 tests, OK; node --check app.js OK. Windows rebuild not re-run.

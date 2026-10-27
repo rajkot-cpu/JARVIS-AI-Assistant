@@ -29,7 +29,7 @@ async function refreshMute() {
 }
 async function refresh() {
   await refreshStatus();
-  const b = await api("getBrief"); if (b.ok) desk.setBrief(b.data.text);
+  const b = await api("getBrief"); if (b.ok) desk.setBrief(b.data?.text ?? "");
   await refreshMute();
 }
 
