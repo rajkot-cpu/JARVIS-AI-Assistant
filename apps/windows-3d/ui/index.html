@@ -3,18 +3,30 @@
 <head>
   <meta charset="utf-8" />
   <title>JARVIS 3D</title>
-  <style>html,body{margin:0;height:100%;background:#04070b;color:#38d4ff;font-family:Segoe UI,sans-serif}
-  #boot{padding:24px}</style>
+  <link rel="stylesheet" href="./css/desk.css" />
 </head>
 <body>
-  <div id="boot">JARVIS 3D — host online</div>
+  <div id="banner"></div>
+  <div id="desk"></div>
   <script type="module">
+    import { createDesk } from "./js/scene.js";
     import { api } from "./js/bridge.js";
-    window.addEventListener("pywebviewready", async () => {
+    const banner = document.getElementById("banner");
+    const showError = (m) => { banner.textContent = m; banner.classList.toggle("show", !!m); };
+    let desk;
+    try { desk = createDesk(document.getElementById("desk")); }
+    catch (e) { showError("3D init failed: " + e.message); throw e; }
+    window.jarvisDesk = desk;
+    // Phase-1 stub: populate plates (bridge.js returns mock data without pywebview). Task 5 wires actions.
+    async function refresh() {
       const s = await api("getStatus");
-      document.getElementById("boot").textContent =
-        s.ok ? `JARVIS 3D — ${s.data.headline}` : `JARVIS 3D — ${s.error}`;
-    });
+      s.ok ? desk.setStatus(s.data) : desk.setStatus({ headline: "STATUS UNAVAILABLE", error: s.error });
+      const b = await api("getBrief"); if (b.ok) desk.setBrief(b.data.text);
+      const m = await api("getMute"); if (m.ok) desk.setMuteUi(m.data.muted);
+    }
+    desk.onAction((a) => console.log("action (Task 5 wires):", a));
+    refresh().catch((e) => showError(String(e)));
+    window.addEventListener("pywebviewready", () => refresh().catch((e) => showError(String(e))));
   </script>
 </body>
 </html>

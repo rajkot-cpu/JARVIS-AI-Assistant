@@ -1,0 +1,27 @@
+:root{--bg:#04070b;--panel:#0b2233;--cyan:#38d4ff;--text:#e4f6ff;--gold:#ff9d2e;--muted:#7a8fa8;--danger:#ff3b30;--ok:#3dff9a}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,sans-serif}
+#desk{position:fixed;inset:0}
+#desk canvas{display:block}
+.css2d-layer{position:absolute;inset:0;pointer-events:none}
+.plate{pointer-events:auto;background:rgba(11,34,51,.72);border:1px solid var(--cyan);border-radius:6px;padding:16px 20px;box-shadow:0 0 24px rgba(56,212,255,.18);backdrop-filter:blur(6px);color:var(--text);user-select:none}
+.plate-title{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.status-plate{width:400px}
+.headline{font-size:30px;font-weight:600;letter-spacing:.06em;color:var(--cyan);padding-bottom:8px;border-bottom:1px solid var(--cyan)}
+.headline.quiet{color:var(--gold);border-color:var(--gold)}
+.headline.danger{color:var(--danger);border-color:var(--danger)}
+.strip{margin-top:10px;font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.strip .ok{color:var(--ok)}.strip .bad{color:var(--danger)}.strip .gold{color:var(--gold)}
+.status-error{margin-top:8px;font-size:12px;color:var(--danger)}
+.brief-plate{width:300px}
+.brief-text{max-height:260px;overflow-y:auto;white-space:pre-wrap;font-size:13px;line-height:1.45}
+.brief-text.empty{color:var(--muted);font-style:italic}
+.actions-plate{width:240px;display:flex;flex-direction:column;gap:10px}
+.btn{font:inherit;font-size:13px;letter-spacing:.08em;padding:8px 12px;border-radius:4px;border:1px solid var(--cyan);background:transparent;color:var(--cyan);cursor:pointer}
+.btn:hover{background:rgba(56,212,255,.12)}
+.btn.primary{border-width:2px}
+.btn.filled{background:var(--cyan);color:var(--bg);font-weight:600}
+.btn.filled:hover{background:#6fe0ff}
+.mute-row{display:flex;align-items:center;gap:8px;color:var(--gold);font-size:13px;letter-spacing:.08em;cursor:pointer}
+.mute-row input{accent-color:var(--gold)}
+#banner{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:10;padding:6px 14px;border:1px solid var(--danger);background:rgba(255,59,48,.12);color:var(--danger);font-size:13px;border-radius:4px;display:none}
+#banner.show{display:block}
