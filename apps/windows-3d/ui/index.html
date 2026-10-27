@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>JARVIS 3D</title>
+  <style>html,body{margin:0;height:100%;background:#04070b;color:#38d4ff;font-family:Segoe UI,sans-serif}
+  #boot{padding:24px}</style>
+</head>
+<body>
+  <div id="boot">JARVIS 3D — host online</div>
+  <script type="module">
+    import { api } from "./js/bridge.js";
+    window.addEventListener("pywebviewready", async () => {
+      const s = await api("getStatus");
+      document.getElementById("boot").textContent =
+        s.ok ? `JARVIS 3D — ${s.data.headline}` : `JARVIS 3D — ${s.error}`;
+    });
+  </script>
+</body>
+</html>
