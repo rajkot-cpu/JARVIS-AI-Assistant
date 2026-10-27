@@ -9,3 +9,4 @@ Thumbs.db
 *~
 *.swp
 # logs/audit.jsonl and STATE.md are intentionally tracked
+backups/

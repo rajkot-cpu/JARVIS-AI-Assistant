@@ -12,3 +12,4 @@
 {"time": "2026-10-28T02:27:49+05:30", "task": "box-install-harden", "action": "golden_evals", "result": "day1, day2, day4 PASS (day4 13/13)", "undo": "none"}
 {"time": "2026-10-28T02:27:49+05:30", "task": "box-install-harden", "action": "edith_scan", "result": "no credentials in scripts/skills/logs", "undo": "none"}
 {"time": "2026-10-28T02:27:49+05:30", "task": "box-install-harden", "action": "git_merge_ff", "result": "main ff to harden branch", "undo": "git reset to 550d039 (needs approval)"}
+{"time": "2026-10-28T02:28:45+05:30", "task": "backup", "action": "tar_backup_workspace", "result": "backups/jarvis-backup-20261028-022831.tar.gz RESTORE_TEST OK", "undo": "rm that backup file"}
