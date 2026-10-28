@@ -65,3 +65,11 @@ class BridgeApi:
             return {"ok": True, "data": {"items": tail(self.root, n=int(limit))}}
         except Exception as e:
             return {"ok": False, "error": str(e)}
+
+    def memory(self) -> dict:
+        try:
+            from memory_index import build
+
+            return {"ok": True, "data": build(self.root)}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
