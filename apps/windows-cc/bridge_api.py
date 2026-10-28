@@ -73,3 +73,11 @@ class BridgeApi:
             return {"ok": True, "data": build(self.root)}
         except Exception as e:
             return {"ok": False, "error": str(e)}
+
+    def llms(self) -> dict:
+        try:
+            from llm_providers import probe_all
+
+            return {"ok": True, "data": {"providers": probe_all()}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
