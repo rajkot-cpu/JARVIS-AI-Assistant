@@ -25,6 +25,7 @@ class BridgeApi:
     def __init__(self, root: Path):
         self.root = Path(root)
         self.panel = panel_api.Panel(self.root)
+        self._hub = None
 
     def status(self) -> dict:
         try:
@@ -79,5 +80,30 @@ class BridgeApi:
             from llm_providers import probe_all
 
             return {"ok": True, "data": {"providers": probe_all()}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def _agents_hub(self):
+        if self._hub is None:
+            from agents.worker import AgentHub
+
+            self._hub = AgentHub(root=self.root)
+        return self._hub
+
+    def agents(self) -> dict:
+        try:
+            return {"ok": True, "data": {"agents": self._agents_hub().list()}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def agent_start(self, role_id: str) -> dict:
+        try:
+            return self._agents_hub().start(str(role_id))
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def agent_stop(self, role_id: str) -> dict:
+        try:
+            return self._agents_hub().stop(str(role_id))
         except Exception as e:
             return {"ok": False, "error": str(e)}
