@@ -107,3 +107,58 @@ class BridgeApi:
             return self._agents_hub().stop(str(role_id))
         except Exception as e:
             return {"ok": False, "error": str(e)}
+
+    def listen(self, timeout: float = 5.0) -> dict:
+        try:
+            from stt import listen_once
+
+            return listen_once(timeout=float(timeout))
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def speak(self, text: str = "") -> dict:
+        try:
+            import voice
+
+            voice.speak(str(text or ""))
+            return {"ok": True, "data": {"spoken": True}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def mute(self, on: bool = True) -> dict:
+        try:
+            import voice
+
+            voice.set_muted(bool(on))
+            return {"ok": True, "data": {"muted": bool(voice.is_muted())}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def session_start(self) -> dict:
+        try:
+            code, out, err = self.panel.session_start()
+            if code == 0:
+                return {"ok": True, "data": {"out": out}}
+            return {"ok": False, "error": (err or out or f"exit {code}").strip()}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def dry_run_workday(self) -> dict:
+        try:
+            code, out, err = self.panel.workday(dry=True)
+            if code == 0:
+                return {"ok": True, "data": {"out": out, "dry": True}}
+            return {"ok": False, "error": (err or out or f"exit {code}").strip()}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def start_workday(self, confirmed: bool = False) -> dict:
+        if not confirmed:
+            return {"ok": False, "error": "R3 confirmation required"}
+        try:
+            code, out, err = self.panel.workday(dry=False)
+            if code == 0:
+                return {"ok": True, "data": {"out": out, "dry": False}}
+            return {"ok": False, "error": (err or out or f"exit {code}").strip()}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
