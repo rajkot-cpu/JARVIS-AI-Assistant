@@ -1,0 +1,1 @@
+Vosk model directories (vosk-model-small-en-in-0.4, vosk-model-small-hi-0.22) were present on the 2026-10-28 GitHub snapshot (~133MB) and intentionally omitted from this archive. Download from alphacephei.com/vosk/models if needed for experiments.
