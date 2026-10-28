@@ -162,3 +162,24 @@ class BridgeApi:
             return {"ok": False, "error": (err or out or f"exit {code}").strip()}
         except Exception as e:
             return {"ok": False, "error": str(e)}
+
+    def brief(self) -> dict:
+        try:
+            return {"ok": True, "data": {"text": self.panel.today_brief() or ""}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def skills(self) -> dict:
+        try:
+            rows = []
+            for s in self.panel.list_skills():
+                rows.append(
+                    {
+                        "name": s.get("name"),
+                        "summary": s.get("summary") or "",
+                        "risk": s.get("risk") or "read",
+                    }
+                )
+            return {"ok": True, "data": {"skills": rows}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}

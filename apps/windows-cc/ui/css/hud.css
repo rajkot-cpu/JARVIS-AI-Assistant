@@ -1,0 +1,139 @@
+:root {
+  --bg: #04070b;
+  --panel: #0b2233;
+  --cyan: #38d4ff;
+  --text: #e4f6ff;
+  --gold: #ff9d2e;
+  --muted: #7a8fa8;
+  --danger: #ff3b30;
+  --ok: #3dff9a;
+  --border: rgba(56, 212, 255, 0.22);
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); }
+#app {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 56px 1fr 64px;
+  height: 100vh;
+}
+.topbar {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; border-bottom: 1px solid var(--border); background: #061018;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-mark {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--cyan), #0a3048 70%);
+  box-shadow: 0 0 12px rgba(56,212,255,.5);
+}
+.brand-title { font-weight: 700; letter-spacing: .12em; font-size: 13px; }
+.brand-sub { font-size: 10px; color: var(--muted); letter-spacing: .18em; }
+.pill {
+  margin-left: 12px; padding: 2px 10px; border-radius: 999px;
+  font-size: 11px; border: 1px solid var(--ok); color: var(--ok);
+}
+.pill.bad { border-color: var(--danger); color: var(--danger); }
+.clock { color: var(--cyan); font-variant-numeric: tabular-nums; font-size: 14px; }
+.top-right { display: flex; align-items: center; gap: 12px; }
+#feed-search {
+  background: #071520; border: 1px solid var(--border); color: var(--text);
+  border-radius: 8px; padding: 6px 10px; width: 180px;
+}
+.operator { color: var(--muted); font-size: 12px; }
+.sidebar {
+  border-right: 1px solid var(--border); background: #050d14;
+  display: flex; flex-direction: column; padding: 12px 8px;
+}
+#nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+#nav button {
+  text-align: left; background: transparent; border: 0; color: var(--muted);
+  padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px;
+}
+#nav button:hover, #nav button.active { background: var(--panel); color: var(--cyan); }
+.badge {
+  float: right; background: #123; color: var(--cyan); border-radius: 8px;
+  padding: 0 6px; font-size: 11px;
+}
+.voice-side { border-top: 1px solid var(--border); padding-top: 12px; }
+.mic {
+  width: 100%; margin-top: 8px; padding: 12px; border-radius: 999px;
+  border: 1px solid var(--cyan); background: #082030; color: var(--cyan); cursor: pointer;
+}
+.mute-row { display: flex; gap: 8px; align-items: center; margin-top: 8px; color: var(--gold); font-size: 12px; }
+#main { overflow: auto; padding: 12px; }
+.page { display: none; }
+.page.active { display: block; }
+.panel {
+  background: linear-gradient(180deg, #0b2233, #071820);
+  border: 1px solid var(--border); border-radius: 12px; padding: 12px;
+}
+.panel h3 { margin: 0 0 10px; font-size: 12px; letter-spacing: .14em; color: var(--cyan); text-transform: uppercase; }
+.hero, .mid, .bottom { display: grid; gap: 12px; margin-bottom: 12px; }
+.hero { grid-template-columns: 220px 1fr 280px; min-height: 300px; }
+.mid { grid-template-columns: 1.2fr 1fr .9fr; }
+.bottom { grid-template-columns: 1fr 1fr 1fr; }
+.core { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.core-label { margin-top: 8px; color: var(--cyan); letter-spacing: .2em; font-size: 12px; }
+#health-list { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+#health-list li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+.scroll { max-height: 240px; overflow: auto; font-size: 12px; }
+.feed-item { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+.feed-item .t { color: var(--muted); font-size: 10px; }
+.agents-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.agent-card {
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px; font-size: 12px;
+  display: flex; justify-content: space-between; align-items: center; gap: 6px;
+}
+.agent-card button { font-size: 11px; cursor: pointer; background: #082030; border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 4px 8px; }
+.state-active { color: var(--ok); }
+.state-standby { color: var(--muted); }
+.state-error { color: var(--danger); }
+.qcmds { display: grid; gap: 8px; }
+.qcmds button, .talk, .modal-actions button {
+  background: #082030; border: 1px solid var(--cyan); color: var(--cyan);
+  border-radius: 8px; padding: 10px; cursor: pointer;
+}
+.qcmds button.danger, #r3-confirm.danger, #cmd-workday.danger {
+  border-color: var(--gold); color: var(--gold);
+}
+.gauges { display: flex; gap: 16px; justify-content: space-around; }
+.gauge {
+  width: 84px; height: 84px; border-radius: 50%; border: 3px solid var(--cyan);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 18px; color: var(--cyan);
+}
+.gauge small { font-size: 10px; color: var(--muted); }
+.llm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 12px; }
+.llm {
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px;
+  display: flex; justify-content: space-between;
+}
+.llm.connected { border-color: var(--ok); }
+.llm.missing_key, .llm.auth_error, .llm.network_error { opacity: .75; }
+.talkbar {
+  grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 16px;
+  border-top: 1px solid var(--border); background: #061018;
+}
+.talk {
+  min-width: 320px; border-radius: 999px; padding: 14px 28px; font-weight: 600;
+  box-shadow: 0 0 24px rgba(56,212,255,.25);
+}
+.banner { color: var(--danger); font-size: 12px; min-height: 1em; }
+.gold { color: var(--gold) !important; }
+.muted { color: var(--muted); }
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.65);
+  display: flex; align-items: center; justify-content: center; z-index: 50;
+}
+.modal.hidden { display: none; }
+.modal-card {
+  background: var(--panel); border: 1px solid var(--gold); border-radius: 12px;
+  padding: 20px; width: min(420px, 92vw);
+}
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+@media (max-width: 1100px) {
+  .hero, .mid, .bottom { grid-template-columns: 1fr; }
+}
