@@ -49,3 +49,19 @@ class BridgeApi:
             }
         except Exception as e:
             return {"ok": False, "error": str(e)}
+
+    def metrics(self) -> dict:
+        try:
+            from metrics import snapshot
+
+            return {"ok": True, "data": snapshot()}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
+
+    def feed(self, limit: int = 50) -> dict:
+        try:
+            from feed import tail
+
+            return {"ok": True, "data": {"items": tail(self.root, n=int(limit))}}
+        except Exception as e:
+            return {"ok": False, "error": str(e)}
